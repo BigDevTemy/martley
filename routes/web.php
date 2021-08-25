@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PublicController;
+use App\Http\Middleware\super_admin;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -22,3 +23,6 @@ Route::get('/admin/login',[PublicController::class,'adminloginpage'])->name('adm
 Route::get('/admin/creation',[PublicController::class,'createadmin'])->name('createadmin');
 Route::post('/save/admin/',[PublicController::class,'save_admin'])->name('save_admin');
 Route::post('/admin/signin',[PublicController::class,'signin'])->name('signin');
+Route::middleware([super_admin::class])->group(function(){
+    Route::get('/admin/dashboard',[PublicController::class,'admindashboard'])->name('admindashboard');
+});

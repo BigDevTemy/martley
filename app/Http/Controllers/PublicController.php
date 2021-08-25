@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Redirect;
+use Illuminate\Support\Facades\Auth;
 
 class PublicController extends Controller
 {
@@ -75,9 +76,22 @@ class PublicController extends Controller
             'password' => 'required',
             
         ]);
+        $credentials = ['fname'=>$request->fname,'password'=>$request->password];
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            return redirect()->route('admindashboard');
+            //return back()->withErrors([
+                //'Welcome' => Auth::user(),
+           // ]);
+        }
+
+        return back()->withErrors([
+            'Message' => 'The provided credentials do not match our records.',
+        ]);
 
         
-
-        return Redirect::back()->withErrors(['SignOUT']);
+    }
+    public function admindashboard(){
+        return view('backendUsers.dashboard');
     }
 }
