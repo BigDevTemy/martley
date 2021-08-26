@@ -8,9 +8,12 @@ use App\Models\CustomerDetails;
 use App\Models\loanTable;
 use App\Models\loanStructure;
 use Carbon\Carbon;
+use App\Models\awaitingloanapproval;
 use Illuminate\Support\Facades\Hash;
 use Redirect;
 use Illuminate\Support\Facades\Auth;
+use DB;
+use Illuminate\Support\Collection;
 
 class BackendController extends Controller
 {
@@ -106,7 +109,7 @@ class BackendController extends Controller
         $create_customer_details->approved_status =$status;
         $create_customer_details->approved_by =$approved_by;
         $create_customer_details->userid = $userid;
-        
+        $create_customer_details->inloan = 0;
         $create_customer_details->save();
 
         if($status == "Approved"){
@@ -122,20 +125,41 @@ class BackendController extends Controller
     }
 
     public function initiateLoan(){
+        /*
         $customers = User::whereHas(
             'roles', function($q){
-                $q->where('name', 'user');
+                $q->where('name', 'user')->where('');
             }
         )->get();
-
+        */
+            //$customer="";
+        $get_array = array();
+        if(Auth::user()->hasRole('super-admin'))
+        {
+            $customers = DB::table('users')
+            ->join('customer_details','customer_details.userid','=','users.userid')
+            ->where('customer_details.approved_status','Approved')
+            ->where('customer_details.inloan','0')
+            ->get();
+        }
+        else if(Auth::user()->hasRole('loan_officers')){
+            $customers = DB::table('users')
+            ->join('customer_details','customer_details.userid','=','users.userid')
+            ->where('customer_details.loan_manager_userid', Auth::user()->userid)
+            ->where('customer_details.inloan','<>',1)
+            ->where('customer_details.approved_status','Approved')
+            ->get();
+        }
+        
         return view('backendUsers.initiateloan',compact('customers'));
     }
 
     public function approveloan($userid){
         
         $getUserDetails = User::where('userid',$userid)->first();
+        $getCustomerDetails = CustomerDetails::where('userid',$userid)->first();
         $loanHistory = loanTable::where('userid',$userid)->get();
-        return view('backendUsers.review_loan',compact('getUserDetails','loanHistory'));
+        return view('backendUsers.review_loan',compact('getUserDetails','loanHistory','getCustomerDetails'));
     }
 
     public function updatereview(Request $request){
@@ -146,6 +170,13 @@ class BackendController extends Controller
             return Redirect::back()->withErrors(['The User is Already In Loan']);
         }
         else{
+
+            if($request->loan_manager == ""){
+                $initiator_userid = Auth::user()->userid;
+            }
+            else{
+                $initiator_userid = $request->loan_manager;
+            }
 
             $calculatedInterest = \floatval($request->loanlimit) * \floatval($request->interest/100);
             $loanTotal  = \floatval($request->loanlimit) + \floatval($calculatedInterest);
@@ -159,9 +190,20 @@ class BackendController extends Controller
             $member->loan_amount = $request->loanlimit;
             $member->loan_total = $loanTotal;
             $member->review_status = 'Approved';
-            $member->initiator_userid = Auth::user()->userid;
+            $member->initiator_userid = $initiator_userid;
             $member->approved_userid = Auth::user()->userid;
             $member->save();
+
+            $getid = awaitingloanapproval::where('userid',$request->userid)->where('review_status','unreviewed')->first();
+            $update = awaitingloanapproval::find($getid->id);
+            $update->review_status = "Approved";
+            $update->save();
+
+            $customer_details = CustomerDetails::where('userid',$request->userid)->first();
+            $update = CustomerDetails::find($customer_details->id);
+            $update->inloan =1;
+            $update->save();
+
 
             $cal_loan_repayment = \floatval($request->loanlimit) / \floatval($request->loantenure);
             //$newDateTime = Carbon::now()->addDay(10);
@@ -172,7 +214,7 @@ class BackendController extends Controller
                 $member->amount = $cal_loan_repayment;
                 $member->due_date = Carbon::now()->addDay($i)->toDateString();
                 $member->status = 'unpaid';
-                $member->initiator_userid = Auth::user()->userid;
+                $member->initiator_userid = $initiator_userid;
                 $member->save();
             }
             
@@ -186,5 +228,48 @@ class BackendController extends Controller
         $pending = CustomerDetails::where('approved_status','Pending Approval')->get();
         
         return view('backendUsers.awaiting_approval',compact('pending'));
+    }
+
+    public function changeCustomerStatus($userid){
+        $get = CustomerDetails::where('userid',$userid)->first();
+        $update = CustomerDetails::find($get->id);
+        $update->approved_status = "Approved";
+        $update->save();
+        return Redirect::back()->withErrors(['Customer Successfully Approved.']);
+    }
+
+    public function submitloanrequest($userid,$limit){
+        $member = new awaitingloanapproval();
+
+        $check = awaitingloanapproval::where('userid',$userid)->where('review_status','unreviewed')->first();
+        if($check!=""){
+            return Redirect::back()->withErrors(['Loan Request Already In Review.']); 
+        }
+        else{
+            $member = new awaitingloanapproval();
+            $member->userid = $userid;
+            $member->fullname = $member->user->fname ." " . $member->user->fname;
+            $member->loan_amount = $limit;
+            $member->review_status = "unreviewed";
+            $member->loan_manager_userid = Auth::user()->userid;
+            $member->save();
+            return Redirect::back()->withErrors(['Loan Request has Been Submitted.']);
+        }
+        
+    }
+
+    public function awaiting_loan_approval(){
+        $fetch = awaitingloanapproval::where('review_status','unreviewed')->get();
+        return view('backendUsers.awaiting_loan_request',compact('fetch'));
+
+    }
+
+    public function customer_loan_details($loanid){
+        $loanstructure = loanStructure::where('loanid',$loanid)->orderBy('id')->get();
+        $voodoo = loanStructure::where('loanid',$loanid)->first();
+        $loanHistory = loanTable::where('userid',$voodoo->userid)->orderBy('id')->get();
+        $user = User::where('userid',$voodoo->userid)->first();
+
+        return view('backendUsers.customer_loan_details',\compact('loanstructure','loanHistory','user'));
     }
 }

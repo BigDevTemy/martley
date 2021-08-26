@@ -35,7 +35,11 @@
                             <li class="side-nav-item">
                                 <a href="{{route('awaiting_customer_approval')}}" class="side-nav-link">
                                     <i class="uil-calender"></i>
-                                    <span> Awaiting Approval </span>
+                                    <span> Awaiting Customer Approval </span>
+                                </a>
+                                <a href="{{route('awaiting_loan_approval')}}" class="side-nav-link">
+                                    <i class="uil-calender"></i>
+                                    <span> Awaiting Loan Request </span>
                                 </a>
                             </li>
                         @endif

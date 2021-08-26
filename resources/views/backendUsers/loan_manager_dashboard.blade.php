@@ -72,7 +72,7 @@
                                                     <i class="mdi mdi-currency-usd widget-icon bg-success-lighten text-success"></i>
                                                 </div>
                                                 <h5 class="text-muted fw-normal mt-0" title="Average Revenue">Expected Till Balance</h5>
-                                                <h3 class="mt-3 mb-3">&#x20A6; {{$loan_sum}}</h3>
+                                                <h3 class="mt-3 mb-3">&#x20A6; {{ceil($expected_till)}}</h3>
                                                 <p class="mb-0 text-muted">
                                                     
                                                     <span class="text-nowrap">Current</span>
@@ -88,7 +88,7 @@
                                                     <i class="mdi mdi-pulse widget-icon"></i>
                                                 </div>
                                                 <h5 class="text-muted fw-normal mt-0" title="Growth">Current Till</h5>
-                                                <h3 class="mt-3 mb-3">&#x20A6; {{$repayment_sum}}</h3>
+                                                <h3 class="mt-3 mb-3">&#x20A6; {{ceil($current_till)}}</h3>
                                                 <p class="mb-0 text-muted">
                                                     
                                                     <span class="text-nowrap">Current</span>
@@ -113,10 +113,10 @@
                                         </a>
                                         <h4 class="header-title mt-2 mb-3">Workdone</h4>
 
-                                        <div class="table-responsive">
+                                        <div class="table-responsive" id="example">
                                             <table class="table table-centered table-nowrap table-hover mb-0">
                                                 <tbody>
-                                                @if(!empty($workdone))
+                                                @if(empty($workdone))
 
                                                     <div class="alert alert-info"><h2>No Loan Repayment</h2></div>
 
@@ -124,6 +124,7 @@
                                                     @foreach ($workdone as $customer )
                                                           <tr>
                                                         <td>
+                                                        <input type="hidden" value="{{$customer->loanid}}"/>
                                                             <h5 class="font-14 my-1 fw-normal">#</h5>
                                                             <span class="text-muted font-13">{{$customer->id}}</span>
                                                         </td>
@@ -133,7 +134,7 @@
                                                         </td>
                                                         <td>
                                                             <h5 class="font-14 my-1 fw-normal">Amount to Repay</h5>
-                                                            <span class="text-muted font-13">{{$customer->amount}}</span>
+                                                            <span class="text-muted font-13">{{ceil($customer->amount)}}</span>
                                                         </td>
                                                         <td>
                                                             <h5 class="font-14 my-1 fw-normal">Due Date</h5>
@@ -142,6 +143,14 @@
                                                         <td>
                                                             <h5 class="font-14 my-1 fw-normal">Status</h5>
                                                             <span class=" font-13 badge bg-danger">unpaid</span>
+                                                        </td>
+                                                        <td>
+                                                            <h5 class="font-14 my-1 fw-normal">Update</h5>
+                                                            <button class=" font-13 btn btn-success">Clear Loan</button>
+                                                        </td>
+                                                        <td>
+                                                            <h5 class="font-14 my-1 fw-normal">Details</h5>
+                                                            <button class=" font-13 btn btn-info">more</button>
                                                         </td>
                                                         
                                                     </tr>
@@ -163,4 +172,16 @@
                         <!-- end row -->    
                     </div> 
     
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+
+    $("#example tbody").on('click','tr',function(e){
+        var id = $(this).find('input').attr('value').valueOf();
+        location = "/LoanManager/customer/loan_detail/"+id;
+    })
+    
+   
+  })
+</script>
 @endsection

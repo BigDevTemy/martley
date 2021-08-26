@@ -20,7 +20,7 @@
             </div>
         </div>
 
-        <h4>Loan Request</h4>
+        <h4>Awaiting Loan Request</h4>
         
         <div class="row">
              @if ($errors->any())
@@ -48,12 +48,13 @@
                                                     <th>Home Address</th>
                                                     <th>LoanLimit</th>
                                                     <th>Risk Appetite</th>
-                                                    <th>Actionn</th>
+                                                    <th>Loan Offficer</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                @if(!empty($pending))
-                                                    @foreach($pending as $v)
+                                                @if(!empty($fetch))
+                                                    @foreach($fetch as $v)
                                                         <tr>
                                                             <input type="hidden" value="{{$v->user->fname}} {{$v->user->lname}}" id="{{$v->user->userid}}" title="{{$v->loan_limit}}"/>
                                                             <td>{{$v->id}}</td>
@@ -61,7 +62,9 @@
                                                             <td>{{$v->userid}}</td>
                                                             <td>{{$v->user->phonenumber}}</td>
                                                             <td>{{$v->user->address}}</td>
-                                                            <td>{{$v->loan_limit}}</td>
+
+                                                            <td>{{$v->loan_amount}}</td>
+                                                            <td>{{$v->loan_manager->fname}} {{$v->loan_manager->lname}}</td>
                                                             <td>
                                                                 @if($v->risk_appetite == "LR")
 
@@ -112,16 +115,9 @@
         var id = $(this).find('input').attr('id').valueOf();
 
 
-         location = "/SuperAdmin/admin/approval/customer/"+id;
+         location = "/SuperAdmin/approve/customer/loan/"+id;
 
-        //var limit = $(this).find('input').attr('title').valueOf();
-       
-       // document.getElementById('fullname').innerHTML=x;
-        
-        //document.getElementById('loan_limit').value=limit;
-        //if(e.target.classList.contains('btn-success')){
-           // location = "/SuperAdmin/approve/customer/loan/"+id;
-       // }
+      
     })
     
    

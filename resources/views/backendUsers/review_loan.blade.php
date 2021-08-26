@@ -81,7 +81,11 @@
                                                         
                                                         <h3> <input type="number" min="23" value="23" name="loantenure" class="form-control" placeholder="Tenure" style="width: 200px;"></h3>
                                                     </div>
-
+                                                    <div class="mt-4">
+                                                        <h6 class="font-14">Loan Manager Name:{{$getCustomerDetails->loan_manager->fname}}</h6>
+                                                        
+                                                        <h3> <input type="hidden"  name="loan_manager" value="{{$getCustomerDetails->loan_manager_userid}}" class="form-control" placeholder="Tenure" style="width: 200px;"></h3>
+                                                    </div>
                                                     <!-- Quantity -->
                                                     <div class="mt-4">
                                                         <h6 class="font-14">Interest Rate (%)</h6>

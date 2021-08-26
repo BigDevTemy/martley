@@ -40,6 +40,15 @@
             </div>
         </div>
         <div class="row">
+        @if ($errors->any())
+                <div class="alert alert-info">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
                             <div class="col-12">
                                 <div class="card">
                                     <div class="card-body">
@@ -63,15 +72,15 @@
                                                         @if(!empty($customers))
                                                             @foreach($customers as $v)
                                                                 <tr>
-                                                                    <input type="hidden" value="{{$v->fname}} {{$v->lname}}" id="{{$v->userid}}" title="{{$v->customer_details->loan_limit}}"/>
+                                                                    <input type="hidden" value="{{$v->fname}} {{$v->lname}}" id="{{$v->userid}}" title="{{$v->loan_limit}}"/>
                                                                     <td>{{$v->id}}</td>
                                                                     <td>{{$v->fname}} {{$v->lname}}</td>
                                                                     <td>{{$v->userid}}</td>
                                                                     <td>{{$v->phonenumber}}</td>
                                                                     <td>{{$v->address}}</td>
-                                                                    <td>{{$v->customer_details->loan_limit}}</td>
+                                                                    <td>{{$v->loan_limit}}</td>
                                                                     <td>
-                                                                        @if($v->customer_details->risk_appetite == "LR")
+                                                                        @if($v->risk_appetite == "LR")
 
                                                                             <span class="badge bg-success">Low Risk</span>
                                                                         @else
@@ -126,6 +135,14 @@
         if(e.target.classList.contains('btn-success')){
             location = "/SuperAdmin/approve/customer/loan/"+id;
         }
+        
+          $(".btn-primary").on('click',function(){
+            
+            var limit_id = document.getElementById('loan_limit').value
+            location = "/LoanManager/submitloanrequest/"+id+"/"+limit_id
+        })
+
+      
     })
     
    

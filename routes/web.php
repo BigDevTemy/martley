@@ -31,8 +31,10 @@ Route::middleware([super_admin::class])->group(function(){
         Route::get('/approve/customer/loan/{id}',[BackendController::class,'approveloan'])->name('approveloan');
         Route::post('/approve/customer/loan/update',[BackendController::class,'updatereview'])->name('updatereview');
         Route::get('/admin/awaiting/customer_creation/approval',[BackendController::class,'awaiting_customer_approval'])->name('awaiting_customer_approval');
+        Route::get('/admin/approval/customer/{id}',[BackendController::class,'changeCustomerStatus'])->name('changeCustomerStatus');
+        Route::get('/admin/approval/loanrequest',[BackendController::class,'awaiting_loan_approval'])->name('awaiting_loan_approval');
     });
-    
+   
 });
 
 Route::middleware([super_admin_loan_manager::class])->group(function(){
@@ -41,7 +43,12 @@ Route::middleware([super_admin_loan_manager::class])->group(function(){
     Route::get('/create_new_customer',[BackendController::class,'create_new_customer'])->name('create_new_customer');
     Route::post('/add/customer',[BackendController::class,'addCustomer'])->name('addCustomer');
     Route::get('/initiate/customerloan',[BackendController::class,'initiateLoan'])->name('initiateLoan');
-    });
+    Route::get('/submitloanrequest/{id}/{limit}',[BackendController::class,'submitloanrequest'])->name('submitloanrequest');
+    Route::get('/customer/loan_detail/{id}',[BackendController::class,'customer_loan_details'])->name('customer_loan_details');
+
+    
+    
+});
     
 });
 
