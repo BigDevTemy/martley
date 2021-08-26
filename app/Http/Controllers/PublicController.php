@@ -7,6 +7,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Redirect;
 use Illuminate\Support\Facades\Auth;
+use App\Models\loanTable;
+use App\Models\loanStructure;
 
 class PublicController extends Controller
 {
@@ -79,7 +81,13 @@ class PublicController extends Controller
         $credentials = ['fname'=>$request->fname,'password'=>$request->password];
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
-            return redirect()->route('admindashboard');
+            
+            if(Auth::user()->hasRole('super-admin')){
+                return redirect()->route('admindashboard');
+            }
+            if(Auth::user()->hasRole('loan_officers')){
+                return redirect()->route('loanadmindashboard');
+            }
             //return back()->withErrors([
                 //'Welcome' => Auth::user(),
            // ]);
@@ -92,6 +100,25 @@ class PublicController extends Controller
         
     }
     public function admindashboard(){
-        return view('backendUsers.dashboard');
+        $loan_count = count(loanTable::where('review_status','Approved')->get());
+        $repayment_count = count(loanStructure::where('status','paid')->get());
+        $customer_base = count(User::whereHas(
+            'roles', function($q){
+                $q->where('name', 'user');
+            }
+        )->get());
+        $loan_sum = loanTable::where('review_status','Approved')->sum('loan_amount');
+        $repayment_sum = loanStructure::where('status','paid')->sum('amount');
+        $all_customer = User::whereHas(
+            'roles', function($q){
+                $q->where('name', 'user');
+            }
+        )->get();
+
+        return view('backendUsers.dashboard',compact('loan_count','repayment_count','customer_base','loan_sum','repayment_sum','all_customer'));
+    }
+
+    public function loanadmindashboard(){
+        return 'Welcome to loanManager';
     }
 }

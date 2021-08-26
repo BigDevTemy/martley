@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class loanStructure extends Model
 {
-    use HasFactory;
+    //use HasFactory;
+    protected $table='loanStructure';
+    protected $timestamp =true;
 
     public function user(){
         return $this->hasOne('App\Models\User','userid','userid');

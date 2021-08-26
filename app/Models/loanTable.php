@@ -7,12 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class loanTable extends Model
 {
-    use HasFactory;
-
+  
+    protected $table='loanTable';
+    protected $timestamp =true;
 
     public function user(){
         return $this->hasOne('App\Models\User','userid','userid');
     }
+    
     public function customer_details(){
         return $this->hasOne('App\Models\User','userid','userid');
     }

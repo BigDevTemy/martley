@@ -27,15 +27,16 @@ Route::post('/admin/signin',[PublicController::class,'signin'])->name('signin');
 Route::middleware([super_admin::class])->group(function(){
     Route::prefix('SuperAdmin')->group(function(){
         Route::get('/admin/dashboard',[PublicController::class,'admindashboard'])->name('admindashboard');
-        Route::get('/admin/dashboard',[PublicController::class,'admindashboard'])->name('admindashboard');
+      //  Route::get('/admin/dashboard',[PublicController::class,'admindashboard'])->name('admindashboard');
         Route::get('/approve/customer/loan/{id}',[BackendController::class,'approveloan'])->name('approveloan');
+        Route::post('/approve/customer/loan/update',[BackendController::class,'updatereview'])->name('updatereview');
     });
     
 });
 
 Route::middleware([super_admin_loan_manager::class])->group(function(){
     Route::prefix('LoanManager')->group(function(){
-        //Route::get('/admin/dashboard',[PublicController::class,'admindashboard'])->name('admindashboard');
+    Route::get('/admin/dashboard',[PublicController::class,'loanadmindashboard'])->name('loanadmindashboard');
     Route::get('/create_new_customer',[BackendController::class,'create_new_customer'])->name('create_new_customer');
     Route::post('/add/customer',[BackendController::class,'addCustomer'])->name('addCustomer');
     Route::get('/initiate/customerloan',[BackendController::class,'initiateLoan'])->name('initiateLoan');

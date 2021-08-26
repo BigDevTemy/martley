@@ -6,7 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\CustomerDetails;
 use App\Models\loanTable;
-
+use App\Models\loanStructure;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Redirect;
 use Illuminate\Support\Facades\Auth;
@@ -23,6 +24,18 @@ class BackendController extends Controller
 
         if($check !=""){
             $this->generateUserId();
+        }
+        else{
+            return $rand;
+        }
+
+    }
+    public function generateLoanid(){
+        $rand = random_int(1000, 9999);
+        $check = loanTable::where('userid',$rand)->first();
+
+        if($check !=""){
+            $this->generateLoanid();
         }
         else{
             return $rand;
@@ -115,14 +128,59 @@ class BackendController extends Controller
             }
         )->get();
 
-        
-
         return view('backendUsers.initiateloan',compact('customers'));
     }
 
     public function approveloan($userid){
         
         $getUserDetails = User::where('userid',$userid)->first();
-        return view('backendUsers.review_loan',compact('getUserDetails'));
+        $loanHistory = loanTable::where('userid',$userid)->get();
+        return view('backendUsers.review_loan',compact('getUserDetails','loanHistory'));
+    }
+
+    public function updatereview(Request $request){
+        $check = loanTable::where('userid',$request->userid)->where('review_status','Approved')->where('loan_status','unpaid')->first();
+        //$loanstructure = array();
+        $loanId = $this->generateLoanid();
+        if($check!=""){
+            return Redirect::back()->withErrors(['The User is Already In Loan']);
+        }
+        else{
+
+            $calculatedInterest = \floatval($request->loanlimit) * \floatval($request->interest/100);
+            $loanTotal  = \floatval($request->loanlimit) + \floatval($calculatedInterest);
+            $member = new loanTable();
+            $loanId = $this->generateLoanid();
+            $member->userid = $request->userid;
+            $member->loanid = $loanId;
+            $member->loan_interest = \floatval($request->interest/100);
+            $member->loan_tenure = $request->loantenure;
+            $member->loan_status = 'unpaid';
+            $member->loan_amount = $request->loanlimit;
+            $member->loan_total = $loanTotal;
+            $member->review_status = 'Approved';
+            $member->initiator_userid = Auth::user()->userid;
+            $member->approved_userid = Auth::user()->userid;
+            $member->save();
+
+            $cal_loan_repayment = \floatval($request->loanlimit) / \floatval($request->loantenure);
+            //$newDateTime = Carbon::now()->addDay(10);
+            for($i=1; $i <= $request->loantenure ; $i++) {
+                $member = new loanStructure();
+                $member->userid = $request->userid;
+                $member->loanid = $loanId;
+                $member->amount = $cal_loan_repayment;
+                $member->due_date = Carbon::now()->addDay($i);
+                $member->status = 'unpaid';
+                $member->initiator_userid = Auth::user()->userid;
+                $member->save();
+            }
+            
+            return Redirect::back()->withErrors(['Loan Successfully Approved.']);
+            
+        }
+
+        
+
     }
 }

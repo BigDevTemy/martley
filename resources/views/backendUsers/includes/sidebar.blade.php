@@ -14,7 +14,7 @@
                         <li class="side-nav-title side-nav-item">Navigation</li>
 
                         <li class="side-nav-item ">
-                            <a data-bs-toggle="collapse" href="#sidebarDashboards" aria-expanded="false" aria-controls="sidebarDashboards" class="side-nav-link">
+                            <a href="{{route('admindashboard')}}" class="side-nav-link">
                                 <i class="uil-home-alt"></i>
                                 <span class="badge bg-info rounded-pill float-end">new</span>
                                 <span> Dashboard </span>
