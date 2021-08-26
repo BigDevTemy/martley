@@ -9,6 +9,7 @@ use Redirect;
 use Illuminate\Support\Facades\Auth;
 use App\Models\loanTable;
 use App\Models\loanStructure;
+use Carbon\Carbon;
 
 class PublicController extends Controller
 {
@@ -119,6 +120,17 @@ class PublicController extends Controller
     }
 
     public function loanadmindashboard(){
-        return 'Welcome to loanManager';
+        $loan_count = count(loanTable::where('review_status','Approved')->where('userid',Auth::user()->userid)->get());
+        $repayment_count = count(loanStructure::where('status','paid')->where('userid',Auth::user()->userid)->get());
+        $customer_base = count(User::whereHas(
+            'roles', function($q){
+                $q->where('name', 'user');
+            }
+        )->get());
+        $loan_sum = loanTable::where('review_status','Approved')->where('userid',Auth::user()->userid)->sum('loan_amount');
+        $repayment_sum = loanStructure::where('status','paid')->where('userid',Auth::user()->userid)->sum('amount');
+        $workdone = loanStructure::where('initiator_userid',Auth::user()->userid)->where('status','unpaid')->where('due_date',Carbon::now()->toDateString())->get();
+
+        return view('backendUsers.loan_manager_dashboard',compact('loan_count','repayment_count','customer_base','loan_sum','repayment_sum','workdone'));
     }
 }

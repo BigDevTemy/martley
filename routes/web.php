@@ -30,6 +30,7 @@ Route::middleware([super_admin::class])->group(function(){
       //  Route::get('/admin/dashboard',[PublicController::class,'admindashboard'])->name('admindashboard');
         Route::get('/approve/customer/loan/{id}',[BackendController::class,'approveloan'])->name('approveloan');
         Route::post('/approve/customer/loan/update',[BackendController::class,'updatereview'])->name('updatereview');
+        Route::get('/admin/awaiting/customer_creation/approval',[BackendController::class,'awaiting_customer_approval'])->name('awaiting_customer_approval');
     });
     
 });

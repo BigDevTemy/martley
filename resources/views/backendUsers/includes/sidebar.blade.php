@@ -14,25 +14,34 @@
                         <li class="side-nav-title side-nav-item">Navigation</li>
 
                         <li class="side-nav-item ">
-                            <a href="{{route('admindashboard')}}" class="side-nav-link">
-                                <i class="uil-home-alt"></i>
-                                <span class="badge bg-info rounded-pill float-end">new</span>
-                                <span> Dashboard </span>
-                            </a>
-                            
+                            @if(Auth::user()->hasRole('super-admin'))
+                                <a href="{{route('admindashboard')}}" class="side-nav-link">
+                                    <i class="uil-home-alt"></i>
+                                    <span class="badge bg-info rounded-pill float-end">new</span>
+                                    <span> Dashboard </span>
+                                </a>
+                            @elseif(Auth::user()->hasRole('loan_officers'))
+                                <a href="{{route('loanadmindashboard')}}" class="side-nav-link">
+                                    <i class="uil-home-alt"></i>
+                                    <span class="badge bg-info rounded-pill float-end">new</span>
+                                    <span> Dashboard </span>
+                                </a>
+                            @endif
+              
                         </li>
+                        @if(Auth::user()->hasRole('super-admin'))
+                            <li class="side-nav-title side-nav-item">Apps</li>
 
-                        <li class="side-nav-title side-nav-item">Apps</li>
-
-                        <li class="side-nav-item">
-                            <a href="apps-calendar.html" class="side-nav-link">
-                                <i class="uil-calender"></i>
-                                <span> Awaiting Approval </span>
-                            </a>
-                        </li>
+                            <li class="side-nav-item">
+                                <a href="{{route('awaiting_customer_approval')}}" class="side-nav-link">
+                                    <i class="uil-calender"></i>
+                                    <span> Awaiting Approval </span>
+                                </a>
+                            </li>
+                        @endif
 
                        
-
+                    @if(Auth::user()->hasRole('super-admin') || Auth::user()->hasRole('loan_officers') )
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarEcommerce" aria-expanded="false" aria-controls="sidebarEcommerce" class="side-nav-link">
                                 <i class="uil-store"></i>
@@ -67,7 +76,9 @@
                             </div>
                         </li>
 
-                        
+                        @endif
+
+                    @if(Auth::user()->hasRole('super-admin') || Auth::user()->hasRole('teller') )
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarProjects" aria-expanded="false" aria-controls="sidebarProjects" class="side-nav-link">
                                 <i class="uil-briefcase"></i>
@@ -91,13 +102,15 @@
                                 </ul>
                             </div>
                         </li>
-
+                    @endif
+                    @if(Auth::user()->hasRole('super-admin') || Auth::user()->hasRole('manager'))
                         <li class="side-nav-item">
                             <a href="apps-social-feed.html" class="side-nav-link">
                                 <i class="uil-rss"></i>
                                 <span> Manager </span>
                             </a>
                         </li>
+                    
 
                         <li class="side-nav-item">
                             <a data-bs-toggle="collapse" href="#sidebarTasks" aria-expanded="false" aria-controls="sidebarTasks" class="side-nav-link">
@@ -119,7 +132,9 @@
                                 </ul>
                             </div>
                         </li>
+                    @endif
 
+                    @if(Auth::user()->hasRole('super-admin'))
                         <li class="side-nav-item">
                             <a href="apps-file-manager.html" class="side-nav-link">
                                 <i class="uil-folder-plus"></i>
@@ -155,95 +170,11 @@
                             </a>
                         </li>
 
-        
+                    @endif
 
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#sidebarExtendedUI" aria-expanded="false" aria-controls="sidebarExtendedUI" class="side-nav-link">
-                                <i class="uil-package"></i>
-                                <span> Extended UI </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <div class="collapse" id="sidebarExtendedUI">
-                                <ul class="side-nav-second-level">
-                                    <li>
-                                        <a href="extended-dragula.html">Dragula</a>
-                                    </li>
-                                    <li>
-                                        <a href="extended-range-slider.html">Range Slider</a>
-                                    </li>
-                                    <li>
-                                        <a href="extended-ratings.html">Ratings</a>
-                                    </li>
-                                    <li>
-                                        <a href="extended-scrollbar.html">Scrollbar</a>
-                                    </li>
-                                    <li>
-                                        <a href="extended-scrollspy.html">Scrollspy</a>
-                                    </li>
-                                    <li>
-                                        <a href="extended-treeview.html">Treeview</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
-
+                        
    
-                        <li class="side-nav-item">
-                            <a data-bs-toggle="collapse" href="#sidebarMultiLevel" aria-expanded="false" aria-controls="sidebarMultiLevel" class="side-nav-link">
-                                <i class="uil-folder-plus"></i>
-                                <span> Multi Level </span>
-                                <span class="menu-arrow"></span>
-                            </a>
-                            <div class="collapse" id="sidebarMultiLevel">
-                                <ul class="side-nav-second-level">
-                                    <li class="side-nav-item">
-                                        <a data-bs-toggle="collapse" href="#sidebarSecondLevel" aria-expanded="false" aria-controls="sidebarSecondLevel">
-                                            <span> Second Level </span>
-                                            <span class="menu-arrow"></span>
-                                        </a>
-                                        <div class="collapse" id="sidebarSecondLevel">
-                                            <ul class="side-nav-third-level">
-                                                <li>
-                                                    <a href="javascript: void(0);">Item 1</a>
-                                                </li>
-                                                <li>
-                                                    <a href="javascript: void(0);">Item 2</a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="side-nav-item">
-                                        <a data-bs-toggle="collapse" href="#sidebarThirdLevel" aria-expanded="false" aria-controls="sidebarThirdLevel">
-                                            <span> Third Level </span>
-                                            <span class="menu-arrow"></span>
-                                        </a>
-                                        <div class="collapse" id="sidebarThirdLevel">
-                                            <ul class="side-nav-third-level">
-                                                <li>
-                                                    <a href="javascript: void(0);">Item 1</a>
-                                                </li>
-                                                <li class="side-nav-item">
-                                                    <a data-bs-toggle="collapse" href="#sidebarFourthLevel" aria-expanded="false" aria-controls="sidebarFourthLevel">
-                                                        <span> Item 2 </span>
-                                                        <span class="menu-arrow"></span>
-                                                    </a>
-                                                    <div class="collapse" id="sidebarFourthLevel">
-                                                        <ul class="side-nav-forth-level">
-                                                            <li>
-                                                                <a href="javascript: void(0);">Item 2.1</a>
-                                                            </li>
-                                                            <li>
-                                                                <a href="javascript: void(0);">Item 2.2</a>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </li>
+                      
                     </ul>
 
                     <!-- Help Box -->

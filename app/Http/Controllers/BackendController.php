@@ -170,7 +170,7 @@ class BackendController extends Controller
                 $member->userid = $request->userid;
                 $member->loanid = $loanId;
                 $member->amount = $cal_loan_repayment;
-                $member->due_date = Carbon::now()->addDay($i);
+                $member->due_date = Carbon::now()->addDay($i)->toDateString();
                 $member->status = 'unpaid';
                 $member->initiator_userid = Auth::user()->userid;
                 $member->save();
@@ -178,9 +178,13 @@ class BackendController extends Controller
             
             return Redirect::back()->withErrors(['Loan Successfully Approved.']);
             
-        }
+        } 
 
+    }
+
+    public function awaiting_customer_approval(){
+        $pending = CustomerDetails::where('approved_status','Pending Approval')->get();
         
-
+        return view('backendUsers.awaiting_approval',compact('pending'));
     }
 }
