@@ -11,7 +11,7 @@
                     <!--- Sidemenu -->
                     <ul class="side-nav">
 
-                        <li class="side-nav-title side-nav-item">Naigation</li>
+                        <li class="side-nav-title side-nav-item">Navigation</li>
 
                         <li class="side-nav-item ">
                             <a data-bs-toggle="collapse" href="#sidebarDashboards" aria-expanded="false" aria-controls="sidebarDashboards" class="side-nav-link">
@@ -42,7 +42,10 @@
                             <div class="collapse" id="sidebarEcommerce">
                                 <ul class="side-nav-second-level">
                                     <li>
-                                        <a href="#">Create New Customer</a>
+                                        <a href="{{route('create_new_customer')}}">Create New Customer</a>
+                                    </li>
+                                    <li>
+                                        <a href="{{route('initiateLoan')}}">Initiate Loan</a>
                                     </li>
                                     <li>
                                         <a href="#">Customer Awaiting Approval/Result</a>

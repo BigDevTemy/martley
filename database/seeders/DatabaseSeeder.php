@@ -29,8 +29,9 @@ class DatabaseSeeder extends Seeder
         Permission::create(['name' => 'clear_loans']);
         Permission::create(['name' => 'view_allotted_customer']);
         Permission::create(['name' => 'daily_till_balance']);
-
-
+        Permission::create(['name' => 'user']);
+        $role = Role::create(['name' => 'user']);
+        $role->givePermissionTo('user');
         // create roles and assign created permissions
         $role = Role::create(['name' => 'loan_officers']);
         $role->givePermissionTo('view_allotted_customer','approve_customer_creation','daily_till_balance');
@@ -38,6 +39,7 @@ class DatabaseSeeder extends Seeder
         $role = Role::create(['name' => 'teller']);
         $role->givePermissionTo('post_transactions','daily_till_balance');
 
+        
         // or may be done by chaining
         $role = Role::create(['name' => 'manager'])
             ->givePermissionTo(['approve_customer_creation', 'approve_customer_loan','view_all_customers']);
