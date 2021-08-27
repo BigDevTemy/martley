@@ -272,4 +272,12 @@ class BackendController extends Controller
 
         return view('backendUsers.customer_loan_details',\compact('loanstructure','loanHistory','user'));
     }
+
+    public function update_customer_daily_repayment(Request $request){
+        $id = loanStructure::where('due_date',$request->due_date)->where('loanid',$request->loanid)->get();
+        $update = loanStructure::find($id->id);
+        $update->status = "paid";
+        $update->save();
+        return response('Data Successfully Saved');
+    }
 }

@@ -3,6 +3,26 @@
     <div class="content">
                         <!-- start page title -->
                         <div class="row">
+                            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Loan Initiate</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                    <input type="hidden" value="" id="cust_id" />
+                                    <input type="text" value="" id="due_date" />
+                                        <p class="p-1 font-13"> You are about to Confirm that <span id="cust_name" style="font-weight:bold">Temiloluwa Odewumi</span> has remitted a daily sum of <span id="cust_amount" style="font-weight:bold"></span>. </p>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="button" class="btn btn-dark" id="confirm">Confirm</button>
+                                    </div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-12">
                                 <div class="page-title-box">
                                     <div class="page-title-right">
@@ -124,7 +144,8 @@
                                                     @foreach ($workdone as $customer )
                                                           <tr>
                                                         <td>
-                                                        <input type="hidden" value="{{$customer->loanid}}"/>
+                                                        <input type="hidden" value="{{$customer->loanid}}" id="{{$customer->user->fname}} {{$customer->user->lname}}" title="{{ceil($customer->amount)}}"/>
+                                                        <span id="{{$customer->due_date}}"></span>
                                                             <h5 class="font-14 my-1 fw-normal">#</h5>
                                                             <span class="text-muted font-13">{{$customer->id}}</span>
                                                         </td>
@@ -146,7 +167,7 @@
                                                         </td>
                                                         <td>
                                                             <h5 class="font-14 my-1 fw-normal">Update</h5>
-                                                            <button class=" font-13 btn btn-success">Clear Loan</button>
+                                                            <button class=" font-13 btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Clear Loan</button>
                                                         </td>
                                                         <td>
                                                             <h5 class="font-14 my-1 fw-normal">Details</h5>
@@ -175,11 +196,45 @@
         <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script type="text/javascript">
   $(document).ready(function(){
-
+      var id=0;
     $("#example tbody").on('click','tr',function(e){
-        var id = $(this).find('input').attr('value').valueOf();
-        location = "/LoanManager/customer/loan_detail/"+id;
+        if(e.target.textContent == "more"){
+            var id = $(this).find('input').attr('value').valueOf();
+            location = "/LoanManager/customer/loan_detail/"+id;
+        }
+        else if(e.target.textContent == "Clear Loan"){
+            var id = $(this).find('input').attr('value').valueOf();
+            var due_date=$(this).find('span').attr('id').valueOf();
+            var name = $(this).find('input').attr('id').valueOf();
+            var amount = $(this).find('input').attr('title').valueOf();
+            document.getElementById('cust_name').innerHTML = name;
+            document.getElementById('cust_id').value = id;
+            document.getElementById('cust_amount').innerHTML = '&#x20A6;'+amount;
+            document.getElementById('due_date').value=due_date;
+        }
     })
+    $(".btn-dark").on('click',function(e){
+        
+        e.target.textContent="Updating your Till";
+        var id = document.getElementById('cust_id').value;
+        var due_date = document.getElementById('due_date').value;
+        $.ajax({
+            type: "post", url: "{{route('update_customer_daily_repayment')}}",
+            data:{loanid:id,due_date:due_date,"_token": "{{ csrf_token() }}"},
+            success: function (data, text) {
+                if(data == "Data Successfully Saved"){
+                    location = '/LoanManager/admin/dashboard'
+                }
+                else{
+                    alert(data)
+                }
+            },
+            error: function (request, status, error) {
+                console.log(request.responseText);
+            }
+        });
+    })
+    
     
    
   })

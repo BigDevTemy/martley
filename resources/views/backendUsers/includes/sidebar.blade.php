@@ -4,6 +4,9 @@
                         <a href="javascript: void(0);">
                             <img src="{{url('backend_asset/assets/images/users/avatar-1.jpg')}}" alt="user-image" height="42" class="rounded-circle shadow-sm">
                             <span class="leftbar-user-name">{{Auth::user()->fname}}</span>
+                            @foreach(Auth::user()->Roles as $role)
+                                <span class="leftbar-user-name">({{$role->name}})</span>
+                            @endforeach
                             
                         </a>
                     </div>
@@ -189,7 +192,7 @@
                         <img src="{{url('backend_asset/assets/images/help-icon.svg')}}" height="90" alt="Helper Icon Image" />
                         <h5 class="mt-3">Marley Loan Investment</h5>
                         <p class="mb-3">App developed by WebScript</p>
-                        <a href="javascript: void(0);" class="btn btn-outline-primary btn-sm">Upgrade</a>
+                        <a href="javascript: void(0);" class="btn btn-outline-primary btn-sm">Logout</a>
                     </div>
                     <!-- end Help Box -->
                     <!-- End Sidebar -->

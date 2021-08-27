@@ -2,7 +2,7 @@
             <div class="container-fluid">
 
                 <!-- LOGO -->
-                <a href="index.html" class="topnav-logo">
+                <a href="/" class="topnav-logo">
                     <span class="topnav-logo-lg">
                         <img src="{{url('backend_asset/assets/images/logo-light.png')}}" alt="" height="16">
                     </span>
@@ -25,9 +25,12 @@
                     </li>
             
                     <li class="dropdown notification-list topbar-dropdown d-none d-lg-block">
+                        <!--
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" id="topbar-languagedrop" href="#" role="button" aria-haspopup="true" aria-expanded="false">
                             <img src="{{url('backend_asset/assets/images/flags/us.jpg')}}" alt="user-image" class="me-1" height="12"> <span class="align-middle">English</span> <i class="mdi mdi-chevron-down"></i>
                         </a>
+
+                        -->
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu" aria-labelledby="topbar-languagedrop">
     
                             <!-- item-->
@@ -54,10 +57,12 @@
                     </li>
     
                     <li class="dropdown notification-list">
+                        <!--
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" id="topbar-notifydrop" role="button" aria-haspopup="true" aria-expanded="false">
                             <i class="dripicons-bell noti-icon"></i>
                             <span class="noti-icon-badge"></span>
                         </a>
+                        -->
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg" aria-labelledby="topbar-notifydrop">
     
                             <!-- item-->
@@ -146,61 +151,16 @@
                         <a class="nav-link dropdown-toggle arrow-none" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
                             <i class="dripicons-view-apps noti-icon"></i>
                         </a>
-                        <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated dropdown-lg p-0">
-    
-                            <div class="p-2">
-                                <div class="row g-0">
-                                    <div class="col">
-                                        <a class="dropdown-icon-item" href="#">
-                                            <img src="{{url('backend_asset/assets/images/brands/slack.png')}}" alt="slack">
-                                            <span>Slack</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a class="dropdown-icon-item" href="#">
-                                            <img src="{{url('backend_asset/assets/images/brands/github.png')}}" alt="Github">
-                                            <span>GitHub</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a class="dropdown-icon-item" href="#">
-                                            <img src="{{url('backend_asset/assets/images/brands/dribbble.png')}}" alt="dribbble">
-                                            <span>Dribbble</span>
-                                        </a>
-                                    </div>
-                                </div>
-    
-                                <div class="row g-0">
-                                    <div class="col">
-                                        <a class="dropdown-icon-item" href="#">
-                                            <img src="{{url('backend_asset/assets/images/brands/bitbucket.png')}}" alt="bitbucket">
-                                            <span>Bitbucket</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a class="dropdown-icon-item" href="#">
-                                            <img src="{{url('backend_asset/assets/images/brands/dropbox.png')}}" alt="dropbox">
-                                            <span>Dropbox</span>
-                                        </a>
-                                    </div>
-                                    <div class="col">
-                                        <a class="dropdown-icon-item" href="#">
-                                            <img src="{{url('backend_asset/assets/images/brands/g-suite.png')}}" alt="G Suite">
-                                            <span>G Suite</span>
-                                        </a>
-                                    </div>
-                
-                                </div>
-                            </div>
-    
-                        </div>
+                        
                     </li>
-
+                    <!--
                     <li class="notification-list">
                         <a class="nav-link end-bar-toggle" href="javascript: void(0);">
                             <i class="dripicons-gear noti-icon"></i>
                         </a>
                     </li>
+
+                    -->
     
                     <li class="dropdown notification-list">
                         <a class="nav-link dropdown-toggle nav-user arrow-none me-0" data-bs-toggle="dropdown" id="topbar-userdrop" href="#" role="button" aria-haspopup="true"
@@ -209,8 +169,11 @@
                                 <img src="{{url('backend_asset/assets/images/users/avatar-1.jpg')}}" alt="user-image" class="rounded-circle">
                             </span>
                             <span>
-                                <span class="account-user-name">Dominic Keller</span>
-                                <span class="account-position">Founder</span>
+                                <span class="account-user-name">{{Auth::user()->fname}}</span>
+                                 @foreach(Auth::user()->Roles as $role)
+                                    <span class="account-position">{{$role->name}}</span>
+                                @endforeach
+                                
                             </span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-end dropdown-menu-animated topbar-dropdown-menu profile-dropdown" aria-labelledby="topbar-userdrop">
@@ -226,22 +189,24 @@
                             </a>
     
                             <!-- item-->
+                            <!--
                             <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <i class="mdi mdi-account-edit me-1"></i>
                                 <span>Settings</span>
                             </a>
     
-                            <!-- item-->
+                            
                             <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <i class="mdi mdi-lifebuoy me-1"></i>
                                 <span>Support</span>
                             </a>
     
-                            <!-- item-->
+                            
                             <a href="javascript:void(0);" class="dropdown-item notify-item">
                                 <i class="mdi mdi-lock-outline me-1"></i>
                                 <span>Lock Screen</span>
                             </a>
+                            -->
     
                             <!-- item-->
                             <a href="javascript:void(0);" class="dropdown-item notify-item">
@@ -314,8 +279,8 @@
                                 <div class="d-flex">
                                     <img class="d-flex me-2 rounded-circle" src="{{url('backend_asset/assets/images/users/avatar-5.jpg')}}" alt="Generic placeholder image" height="32">
                                     <div class="w-100">
-                                        <h5 class="m-0 font-14">Jacob Deo</h5>
-                                        <span class="font-12 mb-0">Developer</span>
+                                        <h5 class="m-0 font-14">{{Auth::user()->fname}}</h5>
+                                        <span class="font-12 mb-0">Super-Admin</span>
                                     </div>
                                 </div>
                             </a>

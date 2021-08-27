@@ -80,7 +80,7 @@
               </div>
 
               <!-- Submit -->
-              <button class="btn w-100 btn-primary" type="submit">
+              <button class="btn w-100 btn-primary" type="submit" style="background-image: linear-gradient(to right top, #de2641, #c22268, #95357f, #624181, #344271);">
                 Login
               </button>
 
@@ -96,7 +96,7 @@
           <div class="col-lg-7 offset-lg-1 align-self-stretch d-none d-lg-block">
 
             <!-- Image -->
-            <div class="h-100 w-cover bg-cover" style="background-image: url(/martley_web_asset/assets/img/covers/cover-14.jpg);"></div>
+            <div class="h-100 w-cover bg-cover" style="background-image: linear-gradient(to right top, #de2641, #c22268, #95357f, #624181, #344271);"></div>
 
             <!-- Shape -->
             <div class="shape shape-start shape-fluid-y text-white">
