@@ -46,8 +46,8 @@ Route::middleware([super_admin_loan_manager::class])->group(function(){
     Route::get('/submitloanrequest/{id}/{limit}',[BackendController::class,'submitloanrequest'])->name('submitloanrequest');
     Route::get('/customer/loan_detail/{id}',[BackendController::class,'customer_loan_details'])->name('customer_loan_details');
     Route::post('/update/customer/daily/repayment',[BackendController::class,'update_customer_daily_repayment'])->name('update_customer_daily_repayment');
-
-    
+    Route::get('/pending/approvals/',[BackendController::class,'pending_approval_loans'])->name('pending_approval_loans');
+    Route::get('/daily/order',[BackendController::class,'daily_order'])->name('daily_order');
     
 });
     

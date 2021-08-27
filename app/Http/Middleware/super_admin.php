@@ -22,8 +22,9 @@ class super_admin
                 return $next($request);
             }
             else{
-                return Redirect('/admin/login');
+                return back();
             }
+            
         }
         
        

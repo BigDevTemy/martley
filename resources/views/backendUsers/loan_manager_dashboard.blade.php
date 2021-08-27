@@ -138,7 +138,7 @@
                                                 <tbody>
                                                 @if(empty($workdone))
 
-                                                    <div class="alert alert-info"><h2>No Loan Repayment</h2></div>
+                                                    <div class="alert alert-info"><h2>No Loan Order</h2></div>
 
                                                 @else
                                                     @foreach ($workdone as $customer )
@@ -222,6 +222,7 @@
             type: "post", url: "{{route('update_customer_daily_repayment')}}",
             data:{loanid:id,due_date:due_date,"_token": "{{ csrf_token() }}"},
             success: function (data, text) {
+                 alert(data)
                 if(data == "Data Successfully Saved"){
                     location = '/LoanManager/admin/dashboard'
                 }

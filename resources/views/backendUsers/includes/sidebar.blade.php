@@ -64,10 +64,10 @@
                                         <a href="{{route('initiateLoan')}}">Initiate Loan</a>
                                     </li>
                                     <li>
-                                        <a href="#">Customer Awaiting Approval/Result</a>
+                                        <a href="{{route('pending_approval_loans')}}">Awaiting Approval/Result</a>
                                     </li>
                                     <li>
-                                        <a href="#">Daily Order</a>
+                                        <a href="{{route('daily_order')}}">Daily Order</a>
                                     </li>
                                     <li>
                                         <a href="#">Total Order</a>

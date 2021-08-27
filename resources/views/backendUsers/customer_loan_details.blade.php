@@ -43,7 +43,7 @@
                                                 
                         
                                                 <h3 class="mt-0">{{$user->fname}} {{$user->lname}}<a href="javascript: void(0);" class="text-muted"><i class="mdi mdi-square-edit-outline ms-2"></i></a> </h3>
-                                                <p class="mb-1">Date Created:{{$user->created_at}}</p>
+                                                <p class="mb-1">Date Created: {{$user->created_at}}</p>
                                                     
                                                     
                                                 <p class="font-16">
@@ -57,12 +57,79 @@
                                                     <!-- Product stock -->
                                                     <div class="mt-3">
                                                         <h4><span class="badge badge-success-lighten">Customer Details</span></h4>
+                                                        <div class="d-flex">
+                                                            
+                                                            <input type="submit" class="btn btn-warning" value="Update Today's Loan" >
+                                                            
+                                                        </div>
+
                                                     </div>
                                                    
-                                                 <div class="d-flex justify-content-between"> 
-                                                 <h4><span class="badge badge-primary-lighten">Address</span></h4>
-                                                 <h4><span class="badge badge-primary-lighten">Customer Details</span></h4>
-                                                 <h4><span class="badge badge-primary-lighten">Customer Details</span></h4>
+                                                 <div class="d-flex justify-content-between bg-light p-2 mt-2"> 
+                                                    <h4>
+                                                        <span class="">Firstname</span><br/>
+                                                        <span class="badge badge-primary-lighten">{{$user->fname}}</span>
+                                                    </h4>
+                                                    <h4>
+                                                        <span class="">Lastname</span><br/>
+                                                        <span class="badge badge-primary-lighten">{{$user->lname}}</span>
+                                    
+                                                    </h4>
+                                                    <h4>
+                                                        <span class="">Email</span><br/>
+                                                        <span class="badge badge-primary-lighten">{{$user->email}}</span>
+                                    
+                                                    </h4>
+                                                    
+                                                 </div>
+                                                 <div class="d-flex justify-content-between bg-light p-2 mt-2"> 
+                                                    <h4>
+                                                        <span class="">Address</span>
+                                                        <span class="badge badge-primary-lighten">{{$user->address}}</span>
+                                                    </h4>
+                                                    <h4>
+                                                        <span class="">PhoneNumber</span>
+                                                        <span class="badge badge-primary-lighten">{{$user->phonenumber}}</span>
+                                                    </h4>
+                                                    <h4>
+                                                        <span class="">Country</span>
+                                                        <span class="badge badge-primary-lighten">{{$user->country}}</span>
+                                    
+                                                    </h4>
+                                                    
+                                                 </div>
+                                                 
+
+                                                 <div class="d-flex justify-content-between bg-success p-2 mt-2"> 
+                                                    <h4>
+                                                        <span style="color:#fff">Employment Type</span>
+                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->employment_type}}</span>
+                                                    </h4>
+                                                    <h4>
+                                                        <span style="color:#fff">Company Address</span>
+                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->business_name}}</span>
+                                                    </h4>
+                                                    <h4>
+                                                        <span style="color:#fff">Phonenumber</span>
+                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->company_phonenumber}}</span>
+                                                    </h4>
+                                                    
+                                                 </div>
+                                                 <div class="d-flex justify-content-between bg-success p-2"> 
+                                                    <h4>
+                                                        <span style="color:#fff">Risk Appetite</span><br/>
+                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->risk_appetite}}</span>
+                                                    </h4>
+                                                    <h4>
+                                                        <span style="color:#fff">Loan Limit</span><br/>
+                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->loan_limit}}</span>
+                                                    </h4>
+                                                    <h4>
+                                                        <span style="color:#fff">Country</span><br/>
+                                                        <span class="badge badge-transparent-lighten">{{$user->country}}</span>
+                                    
+                                                    </h4>
+                                                    
                                                  </div>
 
                                                  <div class="row">
@@ -83,6 +150,7 @@
                                                                                     <th>Amount</th>
                                                                                     <th>status</th>
                                                                                     <th>Due Date</th>
+                                                                                    <th>Action</th>
                                                                                     
                                                                                 </tr>
                                                                             </thead>
@@ -100,6 +168,14 @@
                                                                                             @endif
                                                                                         </td>
                                                                                         <td>{{$v->due_date}}</td>
+                                                                                        <td>
+                                                                                        @if($v->status == "unpaid")
+                                                                                            <button class="btn btn-danger">update</button>
+                                                                                        @elseif($v->status =="paid")
+                                                                                             <button class="btn btn-success disabled">update</button>
+                                                                                        @endif
+                                                                                        
+                                                                                        </td>
                                                                                     
                                                                                     </tr>
                                                                                 @endforeach
@@ -169,5 +245,12 @@
                         </div>
                     </div>
 
-
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        $("#example tbody").on('click','tr',function(e){
+            
+        })
+    })
+</script>
 @endsection

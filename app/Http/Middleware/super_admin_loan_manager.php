@@ -22,8 +22,10 @@ class super_admin_loan_manager
                 return $next($request);
             }
             else{
-                return Redirect('/admin/login');
+                //return Redirect('/admin/login');
+                return back();
             }
+            abort(403);
         }
     }
 }

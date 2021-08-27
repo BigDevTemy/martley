@@ -274,10 +274,36 @@ class BackendController extends Controller
     }
 
     public function update_customer_daily_repayment(Request $request){
-        $id = loanStructure::where('due_date',$request->due_date)->where('loanid',$request->loanid)->get();
+        $id = loanStructure::where('due_date',$request->due_date)->where('loanid',$request->loanid)->first();
         $update = loanStructure::find($id->id);
         $update->status = "paid";
         $update->save();
         return response('Data Successfully Saved');
+    }
+
+    public function pending_approval_loans(){
+        $get_pending_customer_approval = CustomerDetails::where('loan_manager_userid',Auth::user()->userid)->where('approved_status','Pending Approval')->get();
+        $get_pending_customer_loan_request = awaitingloanapproval::where('loan_manager_userid',Auth::user()->userid)->where('review_status','unreviewed')->get();
+        //return $get_pending_customer_approval;
+        return view('backendUsers.pending',compact('get_pending_customer_approval','get_pending_customer_loan_request'));
+    }
+
+    public function daily_order(){
+        //$loan_count = count(loanTable::where('review_status','Approved')->where('initiator_userid',Auth::user()->userid)->get());
+        //$repayment_count = count(loanStructure::where('status','paid')->where('userid',Auth::user()->userid)->get());
+        //$customer_base = count(User::whereHas(
+          //  'roles', function($q){
+            //    $q->where('name', 'user');
+            //}
+        //)->get());
+       // $loan_sum = loanTable::where('review_status','Approved')->where('userid',Auth::user()->userid)->sum('loan_amount');
+        //$repayment_sum = loanStructure::where('status','paid')->where('userid',Auth::user()->userid)->sum('amount');
+        $workdone = loanStructure::where('initiator_userid',Auth::user()->userid)->where('due_date',Carbon::now()->toDateString())->get();
+        $till_tracker = loanStructure::where('initiator_userid',Auth::user()->userid)->where('status','paid')->where('due_date',Carbon::now()->toDateString())->get();
+         $expected_till =  loanStructure::where('initiator_userid',Auth::user()->userid)->where('status','unpaid')->where('due_date',Carbon::now()->toDateString())->sum('amount');
+         $current_till =  loanStructure::where('initiator_userid',Auth::user()->userid)->where('status','paid')->where('due_date',Carbon::now()->toDateString())->sum('amount');
+        return view('backendUsers.daily_order',compact('workdone','expected_till','current_till','till_tracker'));
+
+        
     }
 }
