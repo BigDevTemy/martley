@@ -306,4 +306,77 @@ class BackendController extends Controller
 
         
     }
+
+    public function all_customers_loan_manager(){
+        $get_customers = DB::table('users')
+        ->join('customer_details','customer_details.userid','=','users.userid')
+        ->join('loantable','loantable.userid','=','users.userid')
+        ->where('loan_manager_userid',Auth::user()->userid)
+        ->get();
+
+        return view('backendUsers.all_customers',\compact('get_customers'));
+    }
+    public function customer_profile_details($userid){
+
+        if(Auth::user()->hasRole('loan_officers')){
+            $user = DB::table('users')
+            ->join('customer_details','customer_details.userid','=','users.userid')
+            ->where('loan_manager_userid',Auth::user()->userid)
+            ->first();
+            $loanHistory = loanTable::where('userid',$userid)->where('initiator_userid',Auth::user()->userid)->get();
+            $loanstructure = loanStructure::where('userid',$userid)->where('initiator_userid',Auth::user()->userid)->get();
+            
+            $loan_count = count(loanTable::where('userid',$userid)->where('loan_status','paid')->orWhere('loan_status','unpaid')->get());
+            $repayment_count = count(loanTable::where('userid',$userid)->where('loan_status','paid')->get());
+           
+            $loan_sum = loanTable::where('userid',$userid)->where('loan_status','unpaid')->sum('loan_amount');
+            $repayment_sum= loanTable::where('userid',$userid)->where('loan_status','paid')->sum('loan_amount');
+            return view('backendUsers.customer_profile_details',\compact('user','loanHistory','loanstructure','loan_sum','loan_count','repayment_sum','repayment_count'));
+        }
+        else if(Auth::user()->hasRole('super-admin')){
+            $user = DB::table('users')
+            ->join('customer_details','customer_details.userid','=','users.userid')
+            ->first();
+            $loanHistory = loanTable::where('userid',$userid)->where('initiator_userid',Auth::user()->userid)->get();
+            $loanstructure = loanStructure::where('userid',$userid)->where('initiator_userid',Auth::user()->userid)->get();
+            
+            $loan_count = count(loanTable::where('userid',$userid)->get());
+            $repayment_count = count(loanTable::where('userid',$userid)->where('loan_status','paid')->get());
+           
+            $loan_sum = loanTable::where('userid',$userid)->where('loan_status','paid')->orWhere('loan_status','unpaid')->get();
+            $repayment_sum= loanTable::where('userid',$userid)->where('loan_status','paid')->sum('loan_amount');
+            $loanHistory = loanTable::where('userid',$userid)->get();
+            $loanstructure = loanStructure::where('userid',$userid)->get();
+            return view('backendUsers.customer_profile_details',\compact('user','loanHistory','loanstructure'));
+        }
+        
+    }
+
+    public function review_loan_manager_daily_order(){
+        $loan_managers = User::whereHas(
+            'roles', function($q){
+                $q->where('name', 'loan_officers');
+            }
+        )->get();
+        
+        return view('backendUsers.review_loan_manager_daily_order',\compact('loan_managers'));
+    }
+    public function superadmin_loanadmindashboard($userid){
+        $loan_count = count(loanTable::where('review_status','Approved')->where('initiator_userid',$userid)->get());
+        $loan_count = count(loanTable::where('review_status','Approved')->where('initiator_userid',$userid)->get());
+        $repayment_count = count(loanStructure::where('status','paid')->where('userid',)->get());
+        $customer_base = count(User::whereHas(
+            'roles', function($q){
+                $q->where('name', 'user');
+            }
+        )->get());
+        $loan_sum = loanTable::where('review_status','Approved')->where('userid',$userid)->sum('loan_amount');
+        $repayment_sum = loanStructure::where('status','paid')->where('userid',$userid)->sum('amount');
+        $workdone = loanStructure::where('initiator_userid',$userid)->where('status','unpaid')->where('due_date',Carbon::now()->toDateString())->get();
+        //return Carbon::now();
+        //return $workdone; 
+        $expected_till =  loanStructure::where('initiator_userid',$userid)->where('status','unpaid')->where('due_date',Carbon::now()->toDateString())->sum('amount');
+         $current_till =  loanStructure::where('initiator_userid',$userid)->where('status','paid')->where('due_date',Carbon::now()->toDateString())->sum('amount');
+        return view('backendUsers.loan_manager_dashboard',compact('loan_count','repayment_count','customer_base','loan_sum','repayment_sum','workdone','expected_till','current_till'));
+    }
 }

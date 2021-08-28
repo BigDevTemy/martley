@@ -66,69 +66,69 @@
                                                     </div>
                                                    
                                                  <div class="d-flex justify-content-between bg-light p-2 mt-2"> 
-                                                    <h4>
+                                                    <div>
                                                         <span class="">Firstname</span><br/>
                                                         <span class="badge badge-primary-lighten">{{$user->fname}}</span>
-                                                    </h4>
-                                                    <h4>
+                                                    </div>
+                                                    <div>
                                                         <span class="">Lastname</span><br/>
                                                         <span class="badge badge-primary-lighten">{{$user->lname}}</span>
                                     
-                                                    </h4>
-                                                    <h4>
+                                                    </div>
+                                                    <div>
                                                         <span class="">Email</span><br/>
                                                         <span class="badge badge-primary-lighten">{{$user->email}}</span>
                                     
-                                                    </h4>
+                                                    </div>
                                                     
                                                  </div>
                                                  <div class="d-flex justify-content-between bg-light p-2 mt-2"> 
-                                                    <h4>
+                                                    <div>
                                                         <span class="">Address</span>
                                                         <span class="badge badge-primary-lighten">{{$user->address}}</span>
-                                                    </h4>
-                                                    <h4>
+                                                    </div>
+                                                    <div>
                                                         <span class="">PhoneNumber</span>
                                                         <span class="badge badge-primary-lighten">{{$user->phonenumber}}</span>
-                                                    </h4>
-                                                    <h4>
+                                                    </div>
+                                                    <div>
                                                         <span class="">Country</span>
                                                         <span class="badge badge-primary-lighten">{{$user->country}}</span>
                                     
-                                                    </h4>
+                                                    </div>
                                                     
                                                  </div>
                                                  
 
-                                                 <div class="d-flex justify-content-between bg-success p-2 mt-2"> 
-                                                    <h4>
-                                                        <span style="color:#fff">Employment Type</span>
-                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->employment_type}}</span>
-                                                    </h4>
-                                                    <h4>
-                                                        <span style="color:#fff">Company Address</span>
-                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->business_name}}</span>
-                                                    </h4>
-                                                    <h4>
-                                                        <span style="color:#fff">Phonenumber</span>
-                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->company_phonenumber}}</span>
-                                                    </h4>
+                                                 <div class="d-flex justify-content-between bg-light p-2 mt-2"> 
+                                                    <div>
+                                                        <span style="color:#000">Employment Type</span>
+                                                        <span class="badge badge-dark-lighten">{{$user->customer_details->employment_type}}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span style="color:#000">Company Address</span>
+                                                        <span class="badge badge-dark-lighten">{{$user->customer_details->business_name}}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span style="color:#000">Phonenumber</span>
+                                                        <span class="badge badge-dark-lighten">{{$user->customer_details->company_phonenumber}}</span>
+                                                    </div>
                                                     
                                                  </div>
-                                                 <div class="d-flex justify-content-between bg-success p-2"> 
-                                                    <h4>
-                                                        <span style="color:#fff">Risk Appetite</span><br/>
-                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->risk_appetite}}</span>
-                                                    </h4>
-                                                    <h4>
-                                                        <span style="color:#fff">Loan Limit</span><br/>
-                                                        <span class="badge badge-transparent-lighten">{{$user->customer_details->loan_limit}}</span>
-                                                    </h4>
-                                                    <h4>
-                                                        <span style="color:#fff">Country</span><br/>
-                                                        <span class="badge badge-transparent-lighten">{{$user->country}}</span>
+                                                 <div class="d-flex justify-content-between bg-light p-2"> 
+                                                    <div>
+                                                        <span style="color:#000">Risk Appetite</span><br/>
+                                                        <span class="badge badge-dark-lighten">{{$user->customer_details->risk_appetite}}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span style="color:#000">Loan Limit</span><br/>
+                                                        <span class="badge badge-dark-lighten">{{$user->customer_details->loan_limit}}</span>
+                                                    </div>
+                                                    <div>
+                                                        <span style="color:#000">Country</span><br/>
+                                                        <span class="badge badge-dark-lighten">{{$user->country}}</span>
                                     
-                                                    </h4>
+                                                    </div>
                                                     
                                                  </div>
 

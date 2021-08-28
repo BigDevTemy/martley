@@ -88,7 +88,7 @@
                                                     <i class="mdi mdi-pulse widget-icon"></i>
                                                 </div>
                                                 <h5 class="text-muted fw-normal mt-0" title="Growth">Repayment</h5>
-                                                <h3 class="mt-3 mb-3">&#x20A6; {{$repayment_sum}}</h3>
+                                                <h3 class="mt-3 mb-3">&#x20A6; {{ceil($repayment_sum)}}</h3>
                                                 <p class="mb-0 text-muted">
                                                     <span class="text-success me-2"><i class="mdi mdi-arrow-up-bold"></i> 4.87%</span>
                                                     <span class="text-nowrap">Current</span>
@@ -165,7 +165,7 @@
                                                     <p class="text-muted mb-0 mt-3">Current Repayment</p>
                                                     <h2 class="fw-normal mb-3">
                                                         <small class="mdi mdi-checkbox-blank-circle text-success align-middle me-1"></small>
-                                                        <span>&#x20A6;{{$repayment_sum}}</span>
+                                                        <span>&#x20A6;{{ceil($repayment_sum)}}</span>
                                                     </h2>
                                                 </div>
                                             </div>

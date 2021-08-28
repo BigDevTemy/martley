@@ -38,7 +38,7 @@
                             <li class="side-nav-item">
                                 <a href="{{route('awaiting_customer_approval')}}" class="side-nav-link">
                                     <i class="uil-calender"></i>
-                                    <span> Awaiting Customer Approval </span>
+                                    <span> Customer Approval </span>
                                 </a>
                                 <a href="{{route('awaiting_loan_approval')}}" class="side-nav-link">
                                     <i class="uil-calender"></i>
@@ -63,6 +63,7 @@
                                     <li>
                                         <a href="{{route('initiateLoan')}}">Initiate Loan</a>
                                     </li>
+                                    @if(Auth::user()->hasRole('loan_officers'))
                                     <li>
                                         <a href="{{route('pending_approval_loans')}}">Awaiting Approval/Result</a>
                                     </li>
@@ -73,11 +74,21 @@
                                         <a href="#">Total Order</a>
                                     </li>
                                     <li>
-                                        <a href="#">Customer Profile</a>
+                                        <a href="{{route('all_customers_loan_manager')}}">Customer's Profile</a>
                                     </li>
                                     <li>
                                         <a href="#">Daily Till</a>
                                     </li>
+                                    @endif
+
+                                    @if(Auth::user()->hasRole('super-admin'))
+                                    <li>
+                                        <a href="{{route('review_loan_manager_daily_order')}}">Review Daily Orders</a>
+                                    </li>
+                                    
+                                    @endif
+
+                                
                                     
                                 </ul>
                             </div>

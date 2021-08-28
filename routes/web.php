@@ -33,6 +33,8 @@ Route::middleware([super_admin::class])->group(function(){
         Route::get('/admin/awaiting/customer_creation/approval',[BackendController::class,'awaiting_customer_approval'])->name('awaiting_customer_approval');
         Route::get('/admin/approval/customer/{id}',[BackendController::class,'changeCustomerStatus'])->name('changeCustomerStatus');
         Route::get('/admin/approval/loanrequest',[BackendController::class,'awaiting_loan_approval'])->name('awaiting_loan_approval');
+        Route::get('/daily/loan_managers/order',[BackendController::class,'review_loan_manager_daily_order'])->name('review_loan_manager_daily_order');
+        Route::get('/LoanManager/order/dashboard/{id}',[BackendController::class,'superadmin_loanadmindashboard'])->name('superadmin_loanadmindashboard');
     });
    
 });
@@ -48,7 +50,8 @@ Route::middleware([super_admin_loan_manager::class])->group(function(){
     Route::post('/update/customer/daily/repayment',[BackendController::class,'update_customer_daily_repayment'])->name('update_customer_daily_repayment');
     Route::get('/pending/approvals/',[BackendController::class,'pending_approval_loans'])->name('pending_approval_loans');
     Route::get('/daily/order',[BackendController::class,'daily_order'])->name('daily_order');
-    
+    Route::get('/all/customers',[BackendController::class,'all_customers_loan_manager'])->name('all_customers_loan_manager');
+    Route::get('get/customer/profile/{id}',[BackendController::class,'customer_profile_details'])->name('customer_profile_details');
 });
     
 });

@@ -167,7 +167,12 @@
                                                         </td>
                                                         <td>
                                                             <h5 class="font-14 my-1 fw-normal">Update</h5>
-                                                            <button class=" font-13 btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Clear Loan</button>
+                                                            @if(Auth::user()->hasRole('loan_officers'))
+                                                                <button class=" font-13 btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal">Clear Loan</button>
+                                                            @else
+                                                                <button class=" font-13 btn btn-success disabled" data-bs-toggle="modal" data-bs-target="#exampleModal">Clear Loan</button>
+                                                            @endif
+                                                            
                                                         </td>
                                                         <td>
                                                             <h5 class="font-14 my-1 fw-normal">Details</h5>

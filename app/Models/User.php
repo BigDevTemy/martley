@@ -56,4 +56,7 @@ class User extends Authenticatable
     public function customer_details(){
         return $this->hasOne('App\Models\CustomerDetails','userid','userid');
     }
+    public function loan_manager_order(){
+        return $this->hasMany('App\Models\loanStructure','initiator_userid','userid');
+    }
 }
